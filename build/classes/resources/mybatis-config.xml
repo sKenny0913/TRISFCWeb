@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <typeAliases>
+     <typeAlias type="com.dao.Dongle_POJO" alias="Dongle"/>
+     <typeAlias type="com.dao.qryHead_POJO" alias="qryHead"/>
+  </typeAliases>  
+  <environments default="development">
+    <environment id="development">
+      <transactionManager type="JDBC"/>
+      <dataSource type="POOLED">
+        <property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
+        <property name="url" value="jdbc:oracle:thin:@192.168.210.250:1521:sfc"/>
+        <property name="username" value="TRISFC"/>
+        <property name="password" value="trisfc"/>
+      </dataSource>
+    </environment>
+  </environments>
+  <mappers>
+    <mapper resource="resources/MybatisMapper.xml" />
+    <mapper resource="resources/qryHeadMapper.xml" />
+  </mappers>
+</configuration>

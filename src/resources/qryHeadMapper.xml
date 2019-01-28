@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.qryHeadMapper">
+	<resultMap id="qryHeadResult" type="qryHead">
+		<result property="DataTableName" column="DataTableName" />
+		<result property="StationName" column="StationName" />
+		<result property="SerialNumber" column="SerialNumber" />
+		<result property="KEYNAME" column="KEYNAME" />
+		<result property="VALUE" column="VALUE" />
+		<result property="fDay" column="fDay" />
+		<result property="tDay" column="tDay" />
+		<result property="LogDate" column="LogDate" />
+		<result property="UploadTimes" column="UploadTimes" />
+	</resultMap>
+
+	<select id="selectTableName" resultType="qryHead"
+		resultMap="qryHeadResult">
+		select DataTableName from TRI_CONFIG_FOLDER where foldername = #{StationName}
+	</select>
+
+	<select id="selectqryHead" resultType="qryHead"
+		resultMap="qryHeadResult">
+		select * from ${DataTableName}
+		<where>
+		 keyname = 'Result'
+			<if test="SerialNumber != null and SerialNumber != ''">
+			 AND SerialNumber like CONCAT(CONCAT('%',#{SerialNumber}),'%')
+			</if>
+			<if
+				test="fDay != null and fDay != '' and tDay != null and tDay != ''">
+				and to_char(logdate, 'yyyy-mm-dd') between #{fDay} and #{tDay}
+			</if>
+		</where>
+		order by serialnumber asc, uploadtimes asc, keyname desc
+	</select>
+	
+	<select id="selectqryHeadbyColumnName" resultType="qryHead"
+		resultMap="qryHeadResult">
+		select distinct StationName, SerialNumber from ${DataTableName}
+		<where>
+				KEYNAME like CONCAT(CONCAT('%',#{KEYNAME}),'%') AND VALUE like CONCAT(CONCAT('%',#{VALUE}),'%')
+			<if	test="fDay != null and fDay != '' and tDay != null and tDay != ''">
+				and to_char(logdate, 'yyyy-mm-dd') between #{fDay} and #{tDay}
+			</if>
+		</where>
+		order by serialnumber asc
+	</select>
+</mapper>
+

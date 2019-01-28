@@ -1,0 +1,17 @@
+table, tr, td, th
+{
+    border: 1px solid black;
+    border-collapse:collapse;
+}
+tr.w3-medium
+{
+    cursor:pointer;
+}
+/*
+.sign:after{
+  content:"+";
+  display:inline-block;      
+}
+.expand .sign:after{
+  content:"-";
+ }*/

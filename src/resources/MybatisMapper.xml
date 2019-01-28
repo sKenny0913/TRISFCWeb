@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.DongleMapper">
+	<resultMap id="DongleResult" type="Dongle">
+		<id property="WO" column="WO" />
+		<result property="SN" column="SN" />
+		<result property="PC_NAME" column="PC_NAME" />
+		<result property="OP_ID" column="OP_ID" />
+		<result property="FEATURE_ID" column="FEATURE_ID"/>
+		<result property="WARRANTY" column="WARRANTY" />
+		<result property="WARRANTY_DATE" column="WARRANTY_DATE" />
+		<result property="LOGDATE" column="LOGDATE" />
+		<result property="UPLOADTIMES" column="UPLOADTIMES" />
+	</resultMap>
+
+	<select id="selectDongle" resultType="Dongle" parameterType="int"
+		resultMap="DongleResult">
+		SELECT * from TRI_DONGLE_DATA
+	</select>
+
+	<insert id="insertDongle" parameterType="Dongle">
+		INSERT into TRI_DONGLE_DATA (WO,SN,PC_NAME,OP_ID,FEATURE_ID,WARRANTY,WARRANTY_DATE,LOGDATE,UPLOADTIMES) VALUES(#{WO},#{SN},#{PC_NAME},#{OP_ID},#{FEATURE_ID},#{WARRANTY},#{WARRANTY_DATE},#{LOGDATE},#{UPLOADTIMES})
+	</insert>
+
+	<update id="updateDongle" parameterType="Dongle">
+		UPDATE Dongle SET
+		name=#{name}, district =#{district} WHERE id =#{id}
+	</update>
+
+	<delete id="deleteDongle" parameterType="int">
+		DELETE FROM Dongle
+		WHERE id =#{id}
+	</delete>
+	
+	<select id="selectUploadTimes" resultType="Dongle" parameterType="int"
+		resultMap="DongleResult">
+		SELECT distinct FIRST_VALUE(UPLOADTIMES) OVER (partition by SN ORDER BY LOGDATE DESC) as UPLOADTIMES from TRI_DONGLE_DATA
+		<where>
+		SN = #{SN}
+		</where>
+	</select>
+</mapper>
+
